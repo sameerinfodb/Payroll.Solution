@@ -13,6 +13,9 @@ namespace Payroll.Data.EntityFramework
         private IRoleRepository _roleRepository;
         private IUserRepository _userRepository;
         private IEmployeeRepository _employeeRepository;
+        private ISalaryRepository _salaryRepository;
+        private IPayslipRepository _payslipRepository;
+        private IDepartmentRepository _departmentRepository;
         #endregion
 
         #region Constructors
@@ -44,6 +47,33 @@ namespace Payroll.Data.EntityFramework
             {
                 return _employeeRepository ?? (_employeeRepository = new EmployeeRepository(_context)); 
                 
+            }
+        }
+        public IDepartmentRepository DepartmentRepository
+        {
+            get
+            {
+                return _departmentRepository ?? (_departmentRepository = new DepartmentRepository(_context));
+
+            }
+        }
+
+        public ISalaryRepository SalaryRepository
+        {
+            get
+            {
+                return _salaryRepository ?? (_salaryRepository = new SalaryRepository(_context));
+
+            }
+        }
+
+
+        public IPayslipRepository PayslipRepository
+        {
+            get
+            {
+                return _payslipRepository ?? (_payslipRepository = new PayslipRepository(_context));
+
             }
         }
 

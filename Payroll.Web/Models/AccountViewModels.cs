@@ -40,6 +40,7 @@ namespace Payroll.Web.Models
         [Display(Name = "Password")]
         public string Password { get; set; }
 
+
         [Display(Name = "Remember me?")]
         public bool RememberMe { get; set; }
     }
@@ -60,5 +61,10 @@ namespace Payroll.Web.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        [StringLength(50, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [Display(Name = "Employee Code")]
+        public string EmployeeCode { get; set; }
     }
 }

@@ -12,6 +12,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payroll.Data.EntityFramework", "Payroll.Data.EntityFramework\Payroll.Data.EntityFramework.csproj", "{3BC7B8D4-F327-46BA-A9B6-631B8AA6224A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{7B38BE3E-7ED6-47BD-BEAC-85FCA3ACF615}"
+	ProjectSection(SolutionItems) = preProject
+		CreateDatabase.sql = CreateDatabase.sql
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataTest", "DataTest\DataTest.csproj", "{0F77E452-2FB6-4209-8C4C-7920EE04B0BC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,6 +40,10 @@ Global
 		{3BC7B8D4-F327-46BA-A9B6-631B8AA6224A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3BC7B8D4-F327-46BA-A9B6-631B8AA6224A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3BC7B8D4-F327-46BA-A9B6-631B8AA6224A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F77E452-2FB6-4209-8C4C-7920EE04B0BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F77E452-2FB6-4209-8C4C-7920EE04B0BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F77E452-2FB6-4209-8C4C-7920EE04B0BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F77E452-2FB6-4209-8C4C-7920EE04B0BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

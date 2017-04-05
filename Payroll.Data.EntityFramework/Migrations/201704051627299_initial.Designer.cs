@@ -13,7 +13,7 @@ namespace Payroll.Data.EntityFramework.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201704021910497_initial"; }
+            get { return "201704051627299_initial"; }
         }
         
         string IMigrationMetadata.Source

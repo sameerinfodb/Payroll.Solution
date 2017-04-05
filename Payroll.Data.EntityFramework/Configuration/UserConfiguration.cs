@@ -28,16 +28,20 @@ namespace Payroll.Data.EntityFramework.Configuration
                 .IsMaxLength()
                 .IsOptional();
 
-       
-        
+            Property(x => x.EmployeeCode)
+               .HasColumnName("EmployeeCode")
+               .HasColumnType("nvarchar")
+               .HasMaxLength(50)
+               .IsOptional();
+
+
             Property(x => x.UserName)
                 .HasColumnName("UserName")
                 .HasColumnType("nvarchar")
                 .HasMaxLength(256)
                 .IsRequired();
-          
-            HasOptional(x => x.Employee)
-                .WithRequired(e => e.User);
+
+            
 
             HasMany(x => x.Roles)
                 .WithMany(x => x.Users)

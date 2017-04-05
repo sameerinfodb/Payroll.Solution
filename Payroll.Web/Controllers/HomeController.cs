@@ -12,21 +12,13 @@ namespace Payroll.Web.Controllers
         {
             return View();
         }
-
-        public ActionResult About()
+        [ActionName("DepartmentDetails")]
+        public ActionResult DisplayDepartmentDetails()
         {
-            ViewBag.Message = "Your application description page.";
 
-            return View();
+            return View("DepartmentDetails");
         }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
-        }
-
+        [ActionName("PayslipList")]
         public ActionResult DisplayPayslipList()
         {
           

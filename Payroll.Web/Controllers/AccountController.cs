@@ -74,7 +74,7 @@ namespace Payroll.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser() { UserName = model.UserName };
+                var user = new IdentityUser() { UserName = model.UserName, EmployeeCode=model.EmployeeCode };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

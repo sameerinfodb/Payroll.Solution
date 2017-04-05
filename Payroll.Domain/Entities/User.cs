@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Payroll.Domain.Entities
 {
@@ -19,10 +16,12 @@ namespace Payroll.Domain.Entities
         public string UserName { get; set; }
         public virtual string PasswordHash { get; set; }
         public virtual string SecurityStamp { get; set; }
-        public virtual Employee Employee { get; set; }
+        public virtual string EmployeeCode { get; set; }
         #endregion
 
         #region Navigation Properties
+
+        public virtual Employee Employee { get; set; }
         public virtual ICollection<Claim> Claims
         {
             get { return _claims ?? (_claims = new List<Claim>()); }

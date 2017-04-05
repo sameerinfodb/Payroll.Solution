@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Payroll.Domain.Entities;
 using System.Data.Entity.ModelConfiguration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Payroll.Domain.Entities;
 
 namespace Payroll.Data.EntityFramework.Configuration
 {
@@ -14,24 +9,43 @@ namespace Payroll.Data.EntityFramework.Configuration
         {
             ToTable("Employee");
 
-            HasKey(x => x.EmployeeId)
-                .Property(x => x.EmployeeId)
-                .HasColumnName("EmployeeId")
+            Property(x => x.Id)
+                .HasColumnName("ID")
+                .HasColumnOrder(1)
                 .HasColumnType("uniqueidentifier")
                 .IsRequired();
 
-            Property(x => x.EmployeeName)
-                .HasColumnName("EmployeeName")
+            HasKey(x => x.EmployeeCode)
+                .Property(x => x.EmployeeCode)
+                .HasColumnName("EmployeeCode")
                 .HasColumnType("nvarchar")
-                .HasMaxLength(50);
+                .HasMaxLength(50)
+                .IsRequired();
 
             Property(x => x.DateOfBirth)
                 .HasColumnName("DOB")
-                .HasColumnType("datetime2");
+                .HasColumnType("datetime2")
+                .IsRequired();
 
-            Property(x => x.DateOfJoin)
-                .HasColumnName("DOJ")
-                .HasColumnType("datetime2");
+            Property(x => x.DepartmentAssignedDate)
+                .HasColumnName("DepartmentAssignedData")
+                .HasColumnType("datetime2")
+                .IsOptional();
+
+            Property(x => x.Status)
+              .HasColumnName("Status")
+              .HasColumnType("int")
+              .IsRequired();
+
+
+            HasOptional<Department>(x => x.Department)
+                .WithMany(e => e.Employees)
+                .HasForeignKey(d => d.DepartmentCode);
+
+            HasRequired(s => s.Salary)
+              .WithRequiredPrincipal(e => e.Employee);
+
+
 
         }
     }

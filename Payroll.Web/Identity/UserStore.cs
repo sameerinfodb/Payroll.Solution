@@ -1,11 +1,11 @@
-﻿﻿using Microsoft.AspNet.Identity;
+﻿using Microsoft.AspNet.Identity;
 using Payroll.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Entities = Payroll.Domain.Entities;
+using PayrollEntities = Payroll.Domain.Entities;
 
 namespace Payroll.Web.Identity
 {
@@ -88,7 +88,7 @@ namespace Payroll.Web.Identity
             if (u == null)
                 throw new ArgumentException("IdentityUser does not correspond to a User entity.", "user");
 
-            var c = new Entities.Claim
+            var c = new PayrollEntities.Claim
             {
                 ClaimType = claim.Type,
                 ClaimValue = claim.Value,
@@ -143,7 +143,7 @@ namespace Payroll.Web.Identity
             if (u == null)
                 throw new ArgumentException("IdentityUser does not correspond to a User entity.", "user");
 
-            var l = new Entities.ExternalLogin
+            var l = new PayrollEntities.ExternalLogin
             {
                 LoginProvider = login.LoginProvider,
                 ProviderKey = login.ProviderKey,
@@ -304,26 +304,27 @@ namespace Payroll.Web.Identity
         #endregion
 
         #region Private Methods
-        private Entities.User getUser(IdentityUser identityUser)
+        private PayrollEntities.User getUser(IdentityUser identityUser)
         {
             if (identityUser == null)
                 return null;
 
-            var user = new Entities.User();
+            var user = new PayrollEntities.User();
             populateUser(user, identityUser);
 
             return user;
         }
 
-        private void populateUser(Entities.User user, IdentityUser identityUser)
+        private void populateUser(PayrollEntities.User user, IdentityUser identityUser)
         {
             user.UserId = identityUser.Id;
             user.UserName = identityUser.UserName;
             user.PasswordHash = identityUser.PasswordHash;
             user.SecurityStamp = identityUser.SecurityStamp;
+            user.EmployeeCode = identityUser.EmployeeCode;
         }
 
-        private IdentityUser getIdentityUser(Entities.User user)
+        private IdentityUser getIdentityUser(PayrollEntities.User user)
         {
             if (user == null)
                 return null;
@@ -334,7 +335,7 @@ namespace Payroll.Web.Identity
             return identityUser;
         }
 
-        private void populateIdentityUser(IdentityUser identityUser, Entities.User user)
+        private void populateIdentityUser(IdentityUser identityUser, PayrollEntities.User user)
         {
             identityUser.Id = user.UserId;
             identityUser.UserName = user.UserName;

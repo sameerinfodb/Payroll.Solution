@@ -12,6 +12,9 @@ namespace Payroll.Domain
         IRoleRepository RoleRepository { get; }
         IUserRepository UserRepository { get; }
         IEmployeeRepository EmployeeRepository { get; }
+        IDepartmentRepository DepartmentRepository { get; }
+        ISalaryRepository SalaryRepository { get; }
+        IPayslipRepository PayslipRepository { get; }
         #endregion
 
         #region Methods

@@ -6,12 +6,24 @@ using System.Web.Mvc;
 
 namespace Payroll.Web.Areas.Admin.Controllers
 {
+   
     public class AdminController : Controller
     {
         // GET: Admin/Admin
+        
         public ActionResult Index()
         {
             return View();
+        }
+
+        public ActionResult GenerationPayslips(string employeeCode)
+        {
+            return View();
+        }
+
+        public ActionResult AssignEmployeeToDepartment()
+        {
+            
         }
     }
 }

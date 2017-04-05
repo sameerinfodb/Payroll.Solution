@@ -1,15 +1,16 @@
+using Payroll.Domain.Entities;
+
 namespace Payroll.Data.EntityFramework.Migrations
 {
     using System;
-    using System.Data.Entity;
     using System.Data.Entity.Migrations;
-    using System.Linq;
 
     internal sealed class Configuration : DbMigrationsConfiguration<Payroll.Data.EntityFramework.ApplicationDbContext>
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
+            AutomaticMigrationDataLossAllowed = true;
         }
 
         protected override void Seed(Payroll.Data.EntityFramework.ApplicationDbContext context)
@@ -26,6 +27,32 @@ namespace Payroll.Data.EntityFramework.Migrations
             //      new Person { FullName = "Rowan Miller" }
             //    );
             //
+            Employee employee = new Employee()
+            {
+                FirstName = "Employee1",
+                LastName = "Employee1",
+                EmployeeCode = "M1012402",
+                DateOfBirth = DateTime.Now.AddYears(-30),
+                Status = 1,
+                Id = Guid.NewGuid()
+            };
+            //Salary salary=new Salary()
+            //{
+            //    BasicSalary = 1000M,
+            //    CostToCompany = 100000M,
+            //    Employee = employee,
+            //    EmployeeCode = employee.EmployeeCode,
+            //    Gratuity = 1000M,
+            //    HRA = 1000M,
+            //    ID = Guid.NewGuid(),
+            //    MedicalInsurance = 5000M,
+            //    SpecialAllowance = 15000M
+            //};
+            //context.Salaries.AddOrUpdate(salary);
+
+            //  context.Employees.AddOrUpdate(employee);
+       
+
         }
     }
 }
