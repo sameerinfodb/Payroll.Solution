@@ -13,6 +13,7 @@ using Payroll.Web.Models;
 
 namespace Payroll.Web.Controllers
 {
+   
     [Authorize]
     public class AccountController : Controller
     {
@@ -25,9 +26,11 @@ namespace Payroll.Web.Controllers
 
         //
         // GET: /Account/Login
+        [Route("~/Login")]
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            AuthenticationManager.SignOut();
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -45,6 +48,16 @@ namespace Payroll.Web.Controllers
                 if (user != null)
                 {
                     await SignInAsync(user, model.RememberMe);
+
+                    if (_userManager.IsInRole(user.Id, "Admin"))
+                    {
+                        return RedirectToAction("Index", "Home", new { area = "Admin" });
+
+                    }
+                    if (_userManager.IsInRole(user.Id, "Employee"))
+                    {
+                        return RedirectToAction("Index", "Home", new {area = "Employee"});
+                    }
                     return RedirectToLocal(returnUrl);
                 }
                 else
@@ -286,7 +299,7 @@ namespace Payroll.Web.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login", "Account");
         }
 
         //

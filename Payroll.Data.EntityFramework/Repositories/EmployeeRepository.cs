@@ -5,7 +5,7 @@ namespace Payroll.Data.EntityFramework.Repositories
 {
     internal class EmployeeRepository : Repository<Employee>, IEmployeeRepository
     {
-        public EmployeeRepository(ApplicationDbContext context) : base(context)
+        internal EmployeeRepository(ApplicationDbContext context) : base(context)
         {
         }
     }

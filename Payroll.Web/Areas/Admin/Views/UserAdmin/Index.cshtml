@@ -1,0 +1,75 @@
+﻿@using System.Web.UI.WebControls
+@model IEnumerable<Payroll.Web.Areas.Admin.Models.UserViewModel>
+
+@{
+    ViewBag.Title = "Index";
+    
+}
+
+
+<p>
+    @Html.ActionLink("Create User", "Create", new { Area = "Admin" }, new { Class = "btn btn-danger btn-sm", autofocus = "autofocus" })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.UserName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EmployeeCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RoleNames)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+
+    using (Html.BeginForm("Delete", "UserAdmin", new {Id = item.Id, Name = item.UserName,EmployeeCode=item.EmployeeCode,Roles=item.RoleNames}))
+    {
+        var myModal = "myModal" + item.Id;
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmployeeCode)
+            </td>
+            <td>
+                <ul>
+                    @foreach (var role in item.RoleNames)
+                    {
+                        <li>@role</li>
+                    }
+                </ul>
+            </td>
+            <td>
+                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#@myModal"
+                        data-whatever="@item.Id">
+                    Delete
+                </button>
+                <!-- Modal -->
+                <div class="modal fade" id="@myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div class="modal-dialog modal-sm" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="myModalLabel">Confirm Delete</h4>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to delete User: <span><b>@item.UserName</b></span>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                <input type="submit" value="Delete" class="btn btn-danger" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    }
+}
+
+</table>

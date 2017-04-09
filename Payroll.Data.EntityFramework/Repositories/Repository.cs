@@ -83,9 +83,10 @@ namespace Payroll.Data.EntityFramework.Repositories
             entry.State = EntityState.Modified;
         }
 
-        public void Remove(TEntity entity)
+        public void Remove(object id)
         {
-            Set.Remove(entity);
+            TEntity entity= Set.Find(id);
+            if (entity != null) Set.Remove(entity);
         }
     }
 }

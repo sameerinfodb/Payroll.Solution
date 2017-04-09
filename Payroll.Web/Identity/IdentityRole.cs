@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNet.Identity;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Payroll.Web.Identity
 {
@@ -23,6 +24,7 @@ namespace Payroll.Web.Identity
         }
 
         public Guid Id { get; set; }
+        [Display(Name = "Role Name")]
         public string Name { get; set; }
     }
 }

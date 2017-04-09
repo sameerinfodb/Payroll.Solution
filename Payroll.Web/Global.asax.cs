@@ -12,6 +12,7 @@ namespace Payroll.Web
     {
         protected void Application_Start()
         {
+           
             AreaRegistration.RegisterAllAreas();
             UnityConfig.RegisterComponents();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);

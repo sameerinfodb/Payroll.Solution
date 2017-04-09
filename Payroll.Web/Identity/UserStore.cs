@@ -9,10 +9,10 @@ using PayrollEntities = Payroll.Domain.Entities;
 
 namespace Payroll.Web.Identity
 {
-    public class UserStore : IUserLoginStore<IdentityUser, Guid>, IUserClaimStore<IdentityUser, Guid>, IUserRoleStore<IdentityUser, Guid>, IUserPasswordStore<IdentityUser, Guid>, IUserSecurityStampStore<IdentityUser, Guid>, IUserStore<IdentityUser, Guid>, IDisposable
+    public class UserStore : IUserLoginStore<IdentityUser, Guid>, IUserClaimStore<IdentityUser, Guid>, IUserRoleStore<IdentityUser, Guid>, IUserPasswordStore<IdentityUser, Guid>, IUserSecurityStampStore<IdentityUser, Guid>, IUserStore<IdentityUser, Guid>, IQueryableUserStore<IdentityUser,Guid>, IDisposable
     {
         private readonly IUnitOfWork _unitOfWork;
-
+      
         public UserStore(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
@@ -301,6 +301,12 @@ namespace Payroll.Web.Identity
             user.SecurityStamp = stamp;
             return Task.FromResult(0);
         }
+
+        public Task TestMethod(IdentityUser user, string stamp)
+        {
+            user.SecurityStamp = stamp;
+            return Task.FromResult(0);
+        }
         #endregion
 
         #region Private Methods
@@ -323,7 +329,16 @@ namespace Payroll.Web.Identity
             user.SecurityStamp = identityUser.SecurityStamp;
             user.EmployeeCode = identityUser.EmployeeCode;
         }
-
+        private IdentityUser populateIdentityUser( PayrollEntities.User user)
+        {
+            IdentityUser identityUser = new IdentityUser();
+            identityUser.Id = user.UserId;
+            identityUser.UserName = user.UserName;
+            identityUser.PasswordHash= user.PasswordHash;
+            identityUser.SecurityStamp =user.SecurityStamp;
+            identityUser.EmployeeCode = user.EmployeeCode;
+            return identityUser;
+        }
         private IdentityUser getIdentityUser(PayrollEntities.User user)
         {
             if (user == null)
@@ -341,7 +356,19 @@ namespace Payroll.Web.Identity
             identityUser.UserName = user.UserName;
             identityUser.PasswordHash = user.PasswordHash;
             identityUser.SecurityStamp = user.SecurityStamp;
+            identityUser.EmployeeCode = user.EmployeeCode;
         }
+        
         #endregion
+
+        public IQueryable<IdentityUser> Users
+        {
+            get
+            {
+                List<PayrollEntities.User> users = _unitOfWork.UserRepository.GetAll();
+                List<IdentityUser> identityUsers = users.ConvertAll(populateIdentityUser);
+                return identityUsers.AsQueryable();
+            }
+        }
     }
 }

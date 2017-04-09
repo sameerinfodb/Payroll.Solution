@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace Payroll.Web.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class DepartmentController : Controller
     {
         // GET: Admin/Department

@@ -5,7 +5,7 @@ namespace Payroll.Data.EntityFramework.Repositories
 {
     internal class PayslipRepository:Repository<Payslip>,IPayslipRepository
     {
-        public PayslipRepository(ApplicationDbContext context) : base(context)
+        internal PayslipRepository(ApplicationDbContext context) : base(context)
         {
         }
     }

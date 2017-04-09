@@ -35,7 +35,7 @@ namespace Payroll.Web.Identity
 
             var r = getRole(role);
 
-            _unitOfWork.RoleRepository.Remove(r);
+            _unitOfWork.RoleRepository.Remove(r.RoleId);
             return _unitOfWork.SaveChangesAsync();
         }
 

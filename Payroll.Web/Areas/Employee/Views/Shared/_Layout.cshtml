@@ -16,10 +16,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Payroll Application", "Index", "Home", new { area = "Admin" }, new { @class = "navbar-brand" })
-                @Html.ActionLink("Roles", "Index", "RoleAdmin", new { area = "Admin" }, new { @class = "navbar-brand" })
-                @Html.ActionLink("Users", "Index", "UserAdmin", new { area = "Admin" }, new { @class = "navbar-brand" })
-                @Html.ActionLink("Employees", "Index", "Employee", new { area = "Admin" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Application name", "Index", "Home", new { area = "Employee" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 @Html.Partial("_LoginPartial")

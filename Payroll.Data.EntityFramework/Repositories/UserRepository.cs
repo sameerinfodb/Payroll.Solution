@@ -27,5 +27,19 @@ namespace Payroll.Data.EntityFramework.Repositories
         {
             return Set.FirstOrDefaultAsync(x => x.UserName == username, cancellationToken);
         }
+        public User FindByEmployeeCode(string employeeCode)
+        {
+            return Set.FirstOrDefault(x => x.EmployeeCode == employeeCode);
+        }
+
+        public Task<User> FindByEmployeeCodeAsync(string employeeCode)
+        {
+            return Set.FirstOrDefaultAsync(x => x.EmployeeCode == employeeCode);
+        }
+
+        public Task<User> FindByEmployeeCodeAsync(System.Threading.CancellationToken cancellationToken, string employeeCode)
+        {
+            return Set.FirstOrDefaultAsync(x => x.EmployeeCode == employeeCode, cancellationToken);
+        }
     }
 }

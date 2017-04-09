@@ -20,7 +20,7 @@ namespace Payroll.Domain.Repositories
 
         void Add(TEntity entity);
         void Update(TEntity entity);
-        void Remove(TEntity entity);
+        void Remove(object id);
 
     }
 }
