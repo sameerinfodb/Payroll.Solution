@@ -21,7 +21,8 @@ namespace Payroll.Web.Areas.Admin.Controllers
         public ActionResult Index()
         {
             var employees = _unitOfWork.EmployeeRepository.GetAll();
-            return View(employees);
+           var activeEmployees= employees.Where(e => e.Status == 1);
+            return View(activeEmployees);
         }
 
         public ActionResult Create()
@@ -37,16 +38,23 @@ namespace Payroll.Web.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Save(CreateEmployeeViewModel createEmployeeViewModel)
         {
-            decimal totalSalary = createEmployeeViewModel.BasicSalary;
-            totalSalary += createEmployeeViewModel.HRA;
-            totalSalary += createEmployeeViewModel.TravelAllowance;
-            totalSalary += createEmployeeViewModel.MedicalInsurance;
-            totalSalary += createEmployeeViewModel.Gratuity;
-            totalSalary += createEmployeeViewModel.SpecialAllowance;
+            Department department=null;
+            var departments = _unitOfWork.DepartmentRepository.GetAll();
+            SelectList deparSelectList = new SelectList(departments, "DepartmentCode", "DepartmentName");
+            ViewBag.Departments = deparSelectList;
+
+            var totalSalary = TotalSalary(createEmployeeViewModel);
 
             if (createEmployeeViewModel.CostToCompany != totalSalary)
             {
                 ModelState.AddModelError("","Invalid CTC.");
+            }
+
+            if (EmployeeExists(createEmployeeViewModel.EmployeeCode))
+            {
+                var errorMessage = String.Format("{0} Employee code already exists",
+                    createEmployeeViewModel.EmployeeCode);
+                ModelState.AddModelError("", errorMessage);
             }
 
             if (ModelState.IsValid)
@@ -54,16 +62,33 @@ namespace Payroll.Web.Areas.Admin.Controllers
                 if (createEmployeeViewModel.DepartmentCode != null)
                 {
                     createEmployeeViewModel.DepartmentAssignedDate = DateTime.Now;
+                    department = _unitOfWork.DepartmentRepository.FindById(createEmployeeViewModel.DepartmentCode);
                 }
                 createEmployeeViewModel.Status = 1;
+                createEmployeeViewModel.Id = Guid.NewGuid();
+                createEmployeeViewModel.SalaryId = Guid.NewGuid();
 
+
+                Domain.Entities.Employee employee = MapEmployeeViewModelToEntity(createEmployeeViewModel,department);
+                Domain.Entities.Salary employeeSalary = MapSalaryViewModelToEntity(createEmployeeViewModel, employee);
+                try
+                {
+
+                    _unitOfWork.EmployeeRepository.Add(employee);
+                    _unitOfWork.SalaryRepository.Add(employeeSalary);
+                    _unitOfWork.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", ex.Message);
+                    return View(createEmployeeViewModel);
+                }
+                
                 return RedirectToAction("Index", "Employee", new {area = "Admin"});
             }
-            var departments = _unitOfWork.DepartmentRepository.GetAll();
-            SelectList deparSelectList = new SelectList(departments, "DepartmentCode", "DepartmentName");
-            ViewBag.Departments = deparSelectList;
-            return View(createEmployeeViewModel);
+          return View(createEmployeeViewModel);
         }
+     
 
         public ActionResult Edit(string employeeCode)
         {
@@ -98,6 +123,63 @@ namespace Payroll.Web.Areas.Admin.Controllers
             return View();
         }
 
+        #region Helper Method
+
+        private Salary MapSalaryViewModelToEntity(CreateEmployeeViewModel createEmployeeViewModel, Domain.Entities.Employee employee)
+        {
+            Domain.Entities.Salary salary = new Salary()
+            { 
+                ID = createEmployeeViewModel.SalaryId,
+                Employee = employee,
+                BasicSalary = createEmployeeViewModel.BasicSalary,
+                CostToCompany = createEmployeeViewModel.CostToCompany,
+                HRA = createEmployeeViewModel.HRA,
+                Gratuity = createEmployeeViewModel.Gratuity,
+                MedicalInsurance = createEmployeeViewModel.MedicalInsurance,
+                SpecialAllowance = createEmployeeViewModel.SpecialAllowance,
+                Status = createEmployeeViewModel.Status
+
+            };
+
+            return salary;
+
+        }
+
+        private Domain.Entities.Employee MapEmployeeViewModelToEntity(CreateEmployeeViewModel createEmployeeViewModel, Department department)
+        {
+            Domain.Entities.Employee employee;
+            if (department != null)
+            {
+                employee = new Domain.Entities.Employee()
+                {
+                    Id = createEmployeeViewModel.Id,
+                    FirstName = createEmployeeViewModel.FirstName,
+                    LastName = createEmployeeViewModel.LastName,
+                    EmployeeCode = createEmployeeViewModel.EmployeeCode,
+                    DateOfBirth = createEmployeeViewModel.DateOfBirth,
+                    Department = department,
+                    DepartmentAssignedDate = DateTime.Now,
+                    Status = createEmployeeViewModel.Status
+                };
+            }
+            else
+            {
+                employee = new Domain.Entities.Employee()
+                {
+                    Id = createEmployeeViewModel.Id,
+                    FirstName = createEmployeeViewModel.FirstName,
+                    LastName = createEmployeeViewModel.LastName,
+                    EmployeeCode = createEmployeeViewModel.EmployeeCode,
+                    DateOfBirth = createEmployeeViewModel.DateOfBirth,
+                    DepartmentAssignedDate = DateTime.MinValue,
+                    Status = createEmployeeViewModel.Status
+                };
+            }
+
+
+            return employee;
+        }
+
         private Domain.Entities.Employee MapViewModelToEntity(EmployeeViewModel employeeViewModel, Department department)
         {
             Domain.Entities.Employee employee;
@@ -124,7 +206,7 @@ namespace Payroll.Web.Areas.Admin.Controllers
                     LastName = employeeViewModel.LastName,
                     EmployeeCode = employeeViewModel.EmployeeCode,
                     DateOfBirth = employeeViewModel.DateOfBirth,
-                    DepartmentAssignedDate =DateTime.MinValue,
+                    DepartmentAssignedDate = DateTime.MinValue,
                     Status = employeeViewModel.Status
                 };
             }
@@ -148,5 +230,29 @@ namespace Payroll.Web.Areas.Admin.Controllers
                 Status = employee.Status
             };
         }
+
+        private bool EmployeeExists(string employeeCode)
+        {
+            Domain.Entities.Employee employee = _unitOfWork.EmployeeRepository.FindById(employeeCode);
+
+            if (employee != null)
+                return true;
+            else
+            {
+                return false;
+            }
+        }
+
+        private static decimal TotalSalary(CreateEmployeeViewModel createEmployeeViewModel)
+        {
+            decimal totalSalary = createEmployeeViewModel.BasicSalary;
+            totalSalary += createEmployeeViewModel.HRA;
+            totalSalary += createEmployeeViewModel.TravelAllowance;
+            totalSalary += createEmployeeViewModel.MedicalInsurance;
+            totalSalary += createEmployeeViewModel.Gratuity;
+            totalSalary += createEmployeeViewModel.SpecialAllowance;
+            return totalSalary;
+        } 
+        #endregion
     }
 }

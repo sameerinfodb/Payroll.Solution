@@ -76,6 +76,6 @@ namespace Payroll.Web.Areas.Admin.Models
         public string DepartmentCode { get; set; }
 
         public int Status { get; set; }
-
+        public Guid SalaryId { get; set; }
     }
 }
