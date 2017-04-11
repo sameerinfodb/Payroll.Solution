@@ -8,6 +8,8 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using Payroll.Domain;
+using Payroll.Domain.Entities;
 using Payroll.Web.Identity;
 using Payroll.Web.Models;
 
@@ -18,10 +20,12 @@ namespace Payroll.Web.Controllers
     public class AccountController : Controller
     {
         private readonly UserManager<IdentityUser, Guid> _userManager;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public AccountController(UserManager<IdentityUser, Guid> userManager)
+        public AccountController(UserManager<IdentityUser, Guid> userManager, IUnitOfWork unitOfWork)
         {
             _userManager = userManager;
+            _unitOfWork = unitOfWork;
         }
 
         //
@@ -30,7 +34,13 @@ namespace Payroll.Web.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
-            AuthenticationManager.SignOut();
+            if (Request.IsAuthenticated)
+            {
+                AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+                
+            }
+            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -42,6 +52,12 @@ namespace Payroll.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
+            if (Request.IsAuthenticated)
+            {
+                AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+                // If we got this far, something failed, redisplay form
+                return View(model);
+            }
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindAsync(model.UserName, model.Password);
@@ -342,8 +358,17 @@ namespace Payroll.Web.Controllers
         private async Task SignInAsync(IdentityUser user, bool isPersistent)
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
-            var identity = await _userManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
-            AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = isPersistent }, identity);
+            Employee employee=_unitOfWork.EmployeeRepository.FindById(user.EmployeeCode);
+            if (employee.Status == 1)
+            {
+                var identity = await _userManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
+                AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = isPersistent }, identity);
+            }
+            else
+            {
+                RedirectToAction("Login", "Account");
+            }
+            
         }
 
         private void AddErrors(IdentityResult result)

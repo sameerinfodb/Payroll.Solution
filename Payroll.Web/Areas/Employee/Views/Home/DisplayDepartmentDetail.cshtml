@@ -1,0 +1,35 @@
+﻿@model Payroll.Web.Areas.Employee.Models.DepartmentInfoViewModel
+
+<div>
+    <h4>Department Details</h4>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DepartmentCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DepartmentCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DepartmentName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DepartmentName)
+        </dd>
+    </dl>
+</div>
+
+<div id="filters">
+    @Ajax.ActionLink("Employees of my department", "GetEmployeesByDepartment", new {DepartmentCode = Model.DepartmentCode,EmployeeCode= Model.EmployeeCode}, ajaxOptions: new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "employeeDetails" }, htmlAttributes: new { Class = "btn btn-success btn-sm" }) |
+    @Ajax.ActionLink("Department Employee joined after me", "GetEmployeesByDeptDOJ", new { DepartmentCode = Model.DepartmentCode, doj = Model.DepartmentAssignedDate }, ajaxOptions: new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "employeeDetails" }, htmlAttributes: new { Class = "btn btn-success btn-sm" }) |
+    
+</div>
+
+<div id="employeeDetails">
+    
+    
+
+</div>
+

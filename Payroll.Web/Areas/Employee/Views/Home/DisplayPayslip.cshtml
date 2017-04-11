@@ -1,0 +1,35 @@
+﻿@using System.Globalization
+@model IEnumerable<Payroll.Domain.Entities.Payslip>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.PayslipDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PayslipCode)
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+
+        var myModal = "myModal" + item.Id;
+        <tr>
+            <td>
+                @{
+                    DateTimeFormatInfo gmn = new DateTimeFormatInfo();
+
+                    var paySlipMonthYear=string.Format("{0} - {1}", gmn.GetMonthName(item.PayslipDate.Month), item.PayslipDate.Year);
+                     
+                }
+                @paySlipMonthYear
+            </td>
+            <td>
+                @Ajax.ActionLink(item.PayslipCode, "PaySlipDetails", new { PayslipCode = item.PayslipCode}, ajaxOptions: new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "payrollDetailPopupDialogContent", OnComplete = "showDetailDialog"}, htmlAttributes: new {Class = "btn btn-danger btn-sm"}) 
+            </td>
+        </tr>
+
+    }
+
+</table>

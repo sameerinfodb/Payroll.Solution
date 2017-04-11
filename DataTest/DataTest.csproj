@@ -65,6 +65,10 @@
       <Project>{d5354243-d8b0-4ec0-b1ba-83169f373abb}</Project>
       <Name>Payroll.Domain</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Payroll.Web\Payroll.Web.csproj">
+      <Project>{9ba18ebf-13cc-466e-8848-a01faf773f9d}</Project>
+      <Name>Payroll.Web</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -8,6 +8,7 @@ namespace Payroll.Web.Areas.Admin.Models
 {
     public class CreateEmployeeViewModel
     {
+        
         public Guid Id { get; set; }
 
         [Required]

@@ -1,0 +1,51 @@
+﻿@model IEnumerable<Payroll.Domain.Entities.Department>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<p>
+    @Html.ActionLink("Create Deparment", "Create", new { Area = "Admin" }, new { Class = "btn btn-danger btn-sm", autofocus = "autofocus" })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.DepartmentCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DepartmentName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+
+        </th>
+       <th>Operations</th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.DepartmentCode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DepartmentName)
+        </td>
+        <td>
+            @*@Html.DisplayFor(modelItem => item.Status)*@
+            @if (item.Status == 1)
+            {
+                <span class="btn btn-success btn-sm"> Active </span>
+            }
+            else
+            {
+                <span class="btn btn-danger btn-sm"> Not Active </span>
+            }
+        </td>
+        <td>
+           @Html.ActionLink("Edit", "Edit", new {DepartmentCode = item.DepartmentCode}, new {Class = "btn btn-danger btn-sm"}) |
+            @Ajax.ActionLink("Details", "Details", new {DepartmentCode = item.DepartmentCode}, ajaxOptions: new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "payrollDetailPopupDialogContent", OnComplete = "showDetailDialog"}, htmlAttributes: new {Class = "btn btn-danger btn-sm"}) |
+        </td>
+    </tr>
+}
+
+</table>

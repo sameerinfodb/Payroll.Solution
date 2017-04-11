@@ -37,7 +37,7 @@ namespace Payroll.Web.Identity
 
             var u = getUser(user);
 
-            _unitOfWork.UserRepository.Remove(u);
+            _unitOfWork.UserRepository.Remove(u.UserId);
             return _unitOfWork.SaveChangesAsync();
         }
 

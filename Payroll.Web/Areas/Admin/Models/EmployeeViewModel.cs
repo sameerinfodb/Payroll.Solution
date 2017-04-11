@@ -36,8 +36,8 @@ namespace Payroll.Web.Areas.Admin.Models
         public string DepartmentCode { get; set; }
 
         public Salary Salary { get; set; }
-
-
+        [Required]
+        [Range(0,1,ErrorMessage = "Currently only two status are supported i.e. 0- Not Active,1-Active")]
         public int Status { get; set; }
     }
 }

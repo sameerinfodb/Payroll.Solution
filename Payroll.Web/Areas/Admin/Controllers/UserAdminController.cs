@@ -99,7 +99,16 @@ namespace Payroll.Web.Areas.Admin.Controllers
 
         public ActionResult Delete(UserViewModel userViewModel)
         {
-            return RedirectToAction("Index");
+
+            IdentityUser user = _userManager.FindById(userViewModel.Id);
+          IdentityResult result= _userManager.Delete(user);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Index");
+            }
+
+            return View("Error", model:"User cannot be deleted!!!");
+
         }
     }
 }

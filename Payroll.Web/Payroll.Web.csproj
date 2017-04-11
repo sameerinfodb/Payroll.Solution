@@ -199,11 +199,15 @@
     <Compile Include="Areas\Admin\Controllers\RoleAdminController.cs" />
     <Compile Include="Areas\Admin\Controllers\UserAdminController.cs" />
     <Compile Include="Areas\Admin\Models\CreateEmployeeViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\DepartmentViewModel.cs" />
     <Compile Include="Areas\Admin\Models\EmployeeViewModel.cs" />
     <Compile Include="Areas\Admin\Models\SalaryViewModel.cs" />
     <Compile Include="Areas\Admin\Models\UserViewModel.cs" />
     <Compile Include="Areas\Employee\Controllers\HomeController.cs" />
     <Compile Include="Areas\Employee\EmployeeAreaRegistration.cs" />
+    <Compile Include="Areas\Employee\Models\DepartmentEmployeeInfoViewModel.cs" />
+    <Compile Include="Areas\Employee\Models\DepartmentInfoViewModel.cs" />
+    <Compile Include="Areas\Employee\Models\EmployeeInfoViewModel.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -214,7 +218,6 @@
     <Compile Include="Identity\UserStore.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\EmployeeService.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -254,6 +257,20 @@
     <Content Include="Areas\Admin\Views\Employee\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Employee\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Employee\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Department\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Department\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_DetailsDialog.cshtml" />
+    <Content Include="Areas\Admin\Views\Department\_DepartmentDetailPartial.cshtml" />
+    <Content Include="Areas\Admin\Views\Employee\_EmployeeDetailPartial.cshtml" />
+    <Content Include="Areas\Employee\Views\Home\DisplayPayslip.cshtml" />
+    <Content Include="Areas\Employee\Views\Home\DisplayDepartmentDetail.cshtml" />
+    <Content Include="Areas\Employee\Views\Shared\_DetailsDialog.cshtml" />
+    <Content Include="Areas\Employee\Views\Home\_PayslipDetailPartial.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\Error.cshtml" />
+    <Content Include="Areas\Employee\Views\Home\_EmployeeListPartial.cshtml" />
+    <Content Include="Areas\Employee\Views\Home\MessageDisplayView.cshtml" />
+    <Content Include="Areas\Employee\Views\Home\_MeesageDisplayPartial.cshtml" />
+    <Content Include="Areas\Admin\Views\Department\Edit.cshtml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -262,6 +279,8 @@
     <Content Include="Scripts\jquery-3.1.1.slim.js" />
     <Content Include="Scripts\jquery-3.1.1.slim.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -300,8 +319,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Admin\Views\Department\" />
-    <Folder Include="Areas\Employee\Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

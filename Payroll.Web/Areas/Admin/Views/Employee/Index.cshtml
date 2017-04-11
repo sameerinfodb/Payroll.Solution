@@ -23,29 +23,70 @@
         <th>
             @Html.DisplayNameFor(model => model.DepartmentCode)
         </th>
-        <th></th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+            
+        </th>
+        <th>Operations</th>
     </tr>
 
 @foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.EmployeeCode)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FirstName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LastName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DepartmentCode)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { EmployeeCode = item.EmployeeCode}, new { Class = "btn btn-danger btn-sm", autofocus = "autofocus" }) |
-            @Html.ActionLink("Details", "Details", new {id = item.Id}, new { Class = "btn btn-danger btn-sm", autofocus = "autofocus" }) |
-            @Html.ActionLink("Delete", "Delete", new {id = item.Id}, new { Class = "btn btn-danger btn-sm", autofocus = "autofocus" })
-        </td>
-    </tr>
+    using (Html.BeginForm("Delete", "Employee", new {EmployeeCode=item.EmployeeCode}))
+    {
+        var myModal = "myModal" + item.Id;
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmployeeCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DepartmentCode)
+            </td>
+            <td>
+                @*@Html.DisplayFor(modelItem => item.Status)*@
+                @if (item.Status == 1)
+                {
+                    <span class="btn btn-success btn-sm"> Active </span>
+                }
+                else
+                {
+                    <span class="btn btn-danger btn-sm"> Not Active </span>
+                }
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new {EmployeeCode = item.EmployeeCode}, new {Class = "btn btn-danger btn-sm"}) |
+                @Ajax.ActionLink("Details", "Details", new {EmployeeCode = item.EmployeeCode}, ajaxOptions: new AjaxOptions() {HttpMethod = "POST", InsertionMode = InsertionMode.Replace, UpdateTargetId = "payrollDetailPopupDialogContent", OnComplete = "showDetailDialog"}, htmlAttributes: new {Class = "btn btn-danger btn-sm"}) |
+               <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#@myModal"
+                        data-whatever="@item.Id">
+                    Delete
+                </button>
+                <!-- Modal -->
+                <div class="modal fade" id="@myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div class="modal-dialog modal-sm" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="myModalLabel">Confirm Delete</h4>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to delete Employee with Employee code: <span><b>@item.EmployeeCode</b></span>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                <input type="submit" value="Delete" class="btn btn-danger"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+
+        </tr>
+    }
 }
 
 </table>

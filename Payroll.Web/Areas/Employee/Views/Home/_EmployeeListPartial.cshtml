@@ -1,0 +1,36 @@
+﻿@model IEnumerable<Payroll.Domain.Entities.Employee>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.EmployeeCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LastName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Department.DepartmentName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DepartmentAssignedDate)
+        </th>
+
+    </tr>
+
+    @foreach (var item in Model)
+    {
+       
+        <tr>
+            <td>@Html.DisplayName(item.EmployeeCode)</td>
+            <td>@Html.DisplayName(item.FirstName)</td>
+            <td>@Html.DisplayName(item.LastName)</td>
+            <td>@Html.DisplayName(item.Department.DepartmentName)</td>
+            <td>@Html.DisplayName(item.DepartmentAssignedDate.ToShortDateString())</td>
+        </tr>
+
+    }
+
+</table>

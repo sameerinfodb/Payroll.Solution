@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using Payroll.Domain;
 using Payroll.Domain.Entities;
 using Payroll.Web.Areas.Admin.Models;
+using Payroll.Web.Identity;
 
 namespace Payroll.Web.Areas.Admin.Controllers
 {
@@ -21,8 +23,9 @@ namespace Payroll.Web.Areas.Admin.Controllers
         public ActionResult Index()
         {
             var employees = _unitOfWork.EmployeeRepository.GetAll();
-           var activeEmployees= employees.Where(e => e.Status == 1);
-            return View(activeEmployees);
+            //if only active employee need to be displayed
+           //var activeEmployees= employees.Where(e => e.Status == 1);
+            return View(employees);
         }
 
         public ActionResult Create()
@@ -120,7 +123,8 @@ namespace Payroll.Web.Areas.Admin.Controllers
 
             var departments = _unitOfWork.DepartmentRepository.GetAll();
             SelectList deparSelectList = new SelectList(departments, "DepartmentCode", "DepartmentName", employeeViewModel.DepartmentCode);
-            return View();
+            ViewBag.Departments = deparSelectList;
+            return View(employeeViewModel);
         }
 
         #region Helper Method
@@ -254,5 +258,30 @@ namespace Payroll.Web.Areas.Admin.Controllers
             return totalSalary;
         } 
         #endregion
+
+        public ActionResult Details(string employeeCode)
+        {
+            var employee = _unitOfWork.EmployeeRepository.FindById(employeeCode);
+          //  var activeEmployee = employee.Status == 1 ? employee : null;
+            return PartialView("_EmployeeDetailPartial", employee);
+        }
+      
+        [HttpPost]
+        public ActionResult Delete(string employeecode)
+        {
+            var employee = _unitOfWork.EmployeeRepository.FindById(employeecode);
+            if (employee != null)
+            {
+                employee.Status = 0;
+            }
+            else
+            {
+                //TODO: Display alert to users 
+            }
+
+            _unitOfWork.EmployeeRepository.Update(employee);
+            _unitOfWork.SaveChanges();
+            return RedirectToAction("Index");
+        }
     }
 }

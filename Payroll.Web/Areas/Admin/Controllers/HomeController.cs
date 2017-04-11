@@ -30,6 +30,7 @@ namespace Payroll.Web.Areas.Admin.Controllers
             return RedirectToAction("Login", "Account", new { area = "" });
         }
 
+
        
     }
 }

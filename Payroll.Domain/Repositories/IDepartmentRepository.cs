@@ -4,5 +4,6 @@ namespace Payroll.Domain.Repositories
 {
     public  interface IDepartmentRepository:IRepository<Department>
     {
+        
     }
 }
