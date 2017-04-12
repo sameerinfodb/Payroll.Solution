@@ -74,7 +74,7 @@ namespace Payroll.Web.Controllers
                     {
                         return RedirectToAction("Index", "Home", new {area = "Employee"});
                     }
-                    return RedirectToLocal(returnUrl);
+                    ModelState.AddModelError("", "User does not have role associated.Please associate a role to this user.");
                 }
                 else
                 {
